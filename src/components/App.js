@@ -5,6 +5,7 @@ import './App.css'
 import './geosuggest.css'
 import { getAirQuality } from './Client'
 import DataTable from './DataTable'
+import Errors from 'react-errors'
 
 
 class App extends Component {
@@ -15,11 +16,12 @@ class App extends Component {
       items: JSON.parse(localStorage.getItem('items')) || [],
       errors: [],
     };
+    this.handleErrorClose = this.handleErrorClose.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
   onSuggestSelect(suggest) {
     let place = suggest.label;
-    console.log(suggest)
     getAirQuality(place).then((response) => this.handleResponse(response, place))
     .catch((err) => {
       console.log(err)
@@ -38,7 +40,10 @@ class App extends Component {
   }
 
   handleError(data) {
-    console.log("ERROR: " + data.error.message)
+    const newError = new Error('Api error: ' + data.error.message );
+    const newErrors = this.state.errors.slice();
+    newErrors.push(newError);
+    this.setState({ errors: newErrors });
   }
 
   handleSuccess(items, data) {
@@ -49,15 +54,25 @@ class App extends Component {
     })
   }
 
+  handleErrorClose(index) {
+    const newErrors = this.state.errors.slice();
+    newErrors.splice(index, 1);
+    this.setState({ errors: newErrors });
+  }
+
   render() {
     return (
       <div className="App">
        <Geosuggest
-         placeholder="Start typing!"
-         onSuggestSelect={this.onSuggestSelect.bind(this)}
-         location={new google.maps.LatLng(53.558572, 9.9278215)}
-         radius="20" />
-         <DataTable items={this.state.items} />
+        placeholder="Type a location and press ENTER!"
+        onSuggestSelect={this.onSuggestSelect.bind(this)}
+        location={new google.maps.LatLng(53.558572, 9.9278215)}
+        radius="20" />
+        <DataTable items={this.state.items} />
+        <Errors
+          errors={this.state.errors}
+          onErrorClose={this.handleErrorClose}
+        />
       </div>
     )
   }

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Geosuggest from 'react-geosuggest';
 import './App.css'
+import './geosuggest.css'
 
 
 class App extends Component {

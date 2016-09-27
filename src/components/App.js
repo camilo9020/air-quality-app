@@ -3,12 +3,20 @@ import React, { Component } from 'react';
 import Geosuggest from 'react-geosuggest';
 import './App.css'
 import './geosuggest.css'
+import { getAirQuality } from './Client'
 
 
 class App extends Component {
 
   onSuggestSelect(suggest) {
-   console.log(suggest)
+    let place = suggest.label;
+    console.log(suggest)
+    getAirQuality(place).then((response) => {
+      console.log(response.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   render() {

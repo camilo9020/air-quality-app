@@ -10,7 +10,7 @@ class DataTable extends Component {
     })
 
     return(
-      <Table className="DataTable" striped bordered condensed text-center>
+      <Table className="DataTable" striped bordered condensed>
         <thead>
           <tr>
             <th>Place</th>

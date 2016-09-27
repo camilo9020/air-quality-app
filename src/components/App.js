@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: JSON.parse(localStorage.getItem('items')) || [],
       errors: [],
     };
   }
@@ -43,7 +43,7 @@ class App extends Component {
 
   handleSuccess(items, data) {
     items.unshift(data)
-    console.log(items)
+    localStorage.setItem("items", JSON.stringify(items.slice(0,5)));
     this.setState({
       items: items,
     })

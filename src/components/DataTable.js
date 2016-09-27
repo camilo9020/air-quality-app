@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
+import RowTable from './RowTable'
 
 class DataTable extends Component {
   render() {
+    let rows = [];
+    this.props.items.forEach((item) => {
+      rows.push(<RowTable key={rows.length + 1} item={item} />);
+    })
+
     return(
       <table className="DataTable">
         <thead>
@@ -13,10 +19,7 @@ class DataTable extends Component {
           </tr>
         </thead>
         <tbody>
-            <td>item 1 </td>
-            <td>item 1 </td>
-            <td>item 1 </td>
-            <td>item 1 </td>
+          {rows}
         </tbody>
       </table>
     )

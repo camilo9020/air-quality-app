@@ -57,9 +57,9 @@ class App extends Component {
          onSuggestSelect={this.onSuggestSelect.bind(this)}
          location={new google.maps.LatLng(53.558572, 9.9278215)}
          radius="20" />
-         <DataTable />
+         <DataTable items={this.state.items} />
       </div>
-    );
+    )
   }
 }
 

@@ -1,6 +1,7 @@
 /* global google */
 import React, { Component } from 'react';
 import Geosuggest from 'react-geosuggest';
+import './App.css'
 
 
 class App extends Component {

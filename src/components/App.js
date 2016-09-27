@@ -4,6 +4,7 @@ import Geosuggest from 'react-geosuggest';
 import './App.css'
 import './geosuggest.css'
 import { getAirQuality } from './Client'
+import DataTable from './DataTable'
 
 
 class App extends Component {
@@ -30,11 +31,22 @@ class App extends Component {
     let data = response.data
     data["country_name"] = {place:place}
     if ("error" in data ) {
-      console.log(data.error.message)
+      this.handleError(data)
     } else {
-      items.push(data)
-      console.log(items)
+      this.handleSuccess(items, data)
     }
+  }
+
+  handleError(data) {
+    console.log("ERROR: " + data.error.message)
+  }
+
+  handleSuccess(items, data) {
+    items.unshift(data)
+    console.log(items)
+    this.setState({
+      items: items,
+    })
   }
 
   render() {
@@ -45,6 +57,7 @@ class App extends Component {
          onSuggestSelect={this.onSuggestSelect.bind(this)}
          location={new google.maps.LatLng(53.558572, 9.9278215)}
          radius="20" />
+         <DataTable />
       </div>
     );
   }

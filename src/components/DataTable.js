@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Table } from 'react-bootstrap';
 import RowTable from './RowTable'
 
 class DataTable extends Component {
@@ -9,7 +10,7 @@ class DataTable extends Component {
     })
 
     return(
-      <table className="DataTable">
+      <Table className="DataTable" striped bordered condensed text-center>
         <thead>
           <tr>
             <th>Place</th>
@@ -21,7 +22,7 @@ class DataTable extends Component {
         <tbody>
           {rows}
         </tbody>
-      </table>
+      </Table>
     )
   }
 }

@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.14.0",
     "react": "^15.3.2",
+    "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2",
     "react-geosuggest": "^1.25.1",
     "react-google-maps": "^4.11.0"

@@ -8,15 +8,33 @@ import { getAirQuality } from './Client'
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      errors: [],
+    };
+  }
+
   onSuggestSelect(suggest) {
     let place = suggest.label;
     console.log(suggest)
-    getAirQuality(place).then((response) => {
-      console.log(response.data)
-    })
+    getAirQuality(place).then((response) => this.handleResponse(response, place))
     .catch((err) => {
       console.log(err)
     })
+  }
+
+  handleResponse(response, place) {
+    let items = this.state.items
+    let data = response.data
+    data["country_name"] = {place:place}
+    if ("error" in data ) {
+      console.log(data.error.message)
+    } else {
+      items.push(data)
+      console.log(items)
+    }
   }
 
   render() {

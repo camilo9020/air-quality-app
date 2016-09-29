@@ -13,6 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      place: '',
       items: JSON.parse(localStorage.getItem('items')) || [],
       errors: [],
     };
@@ -22,6 +23,14 @@ class App extends Component {
 
   onSuggestSelect(suggest) {
     let place = suggest.label;
+    this.setState({
+      place: place,
+    });
+  }
+
+  searchAirQuality(e) {
+    e.preventDefault();
+    let place = this.state.place;
     getAirQuality(place).then((response) => this.handleResponse(response, place))
     .catch((err) => {
       console.log(err)
@@ -29,8 +38,8 @@ class App extends Component {
   }
 
   handleResponse(response, place) {
-    let items = this.state.items
-    let data = response.data
+    let items = this.state.items;
+    let data = response.data;
     data["country_name"] = {place:place}
     if ("error" in data ) {
       this.handleError(data)
@@ -43,7 +52,10 @@ class App extends Component {
     const newError = new Error('Api error: ' + data.error.message );
     const newErrors = this.state.errors.slice();
     newErrors.push(newError);
-    this.setState({ errors: newErrors });
+    this.setState({
+      errors: newErrors,
+      place: '',
+      });
   }
 
   handleSuccess(items, data) {
@@ -51,6 +63,7 @@ class App extends Component {
     localStorage.setItem("items", JSON.stringify(items.slice(0,5)));
     this.setState({
       items: items,
+      place: '',
     })
   }
 
@@ -63,16 +76,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-       <Geosuggest
-        placeholder="Type a location and press ENTER!"
-        onSuggestSelect={this.onSuggestSelect.bind(this)}
-        location={new google.maps.LatLng(53.558572, 9.9278215)}
-        radius="20" />
+      <form onSubmit={this.searchAirQuality.bind(this)}>
+        <Geosuggest
+          placeholder="Type a location and press SEARCH button!"
+          onSuggestSelect={this.onSuggestSelect.bind(this)}
+          initialValue={this.state.place}
+          location={new google.maps.LatLng(53.558572, 9.9278215)}
+          radius="20"/>
+        <button type="submit" disabled={!this.state.place}>Button</button>
+      </form>
         <DataTable items={this.state.items} />
         <Errors
           errors={this.state.errors}
           onErrorClose={this.handleErrorClose}
         />
+
       </div>
     )
   }

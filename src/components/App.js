@@ -1,12 +1,11 @@
 /* global google */
 import React, { Component } from 'react';
 import Geosuggest from 'react-geosuggest';
-import './App.css'
-import './geosuggest.css'
+// import './App.css'
+// import './geosuggest.css'
 import { getAirQuality } from './Client'
 import DataTable from './DataTable'
 import Errors from 'react-errors'
-
 
 class App extends Component {
 
@@ -14,6 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       place: '',
+      google: google,
       items: JSON.parse(localStorage.getItem('items')) || [],
       errors: [],
     };
@@ -76,21 +76,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <form onSubmit={this.searchAirQuality.bind(this)}>
-        <Geosuggest
-          placeholder="Type a location and press SEARCH button!"
-          onSuggestSelect={this.onSuggestSelect.bind(this)}
-          initialValue={this.state.place}
-          location={new google.maps.LatLng(53.558572, 9.9278215)}
-          radius="20"/>
-        <button type="submit" disabled={!this.state.place}>Button</button>
-      </form>
+        <form onSubmit={this.searchAirQuality.bind(this)}>
+          <Geosuggest
+            placeholder="Type a location and press SEARCH button!"
+            onSuggestSelect={this.onSuggestSelect.bind(this)}
+            initialValue={this.state.place}
+            location={new google.maps.LatLng(53.558572, 9.9278215)}
+            radius="20"/>
+          <button className="disabled" type="submit" disabled={!this.state.place}>Button</button>
+        </form>
         <DataTable items={this.state.items} />
         <Errors
           errors={this.state.errors}
           onErrorClose={this.handleErrorClose}
         />
-
       </div>
     )
   }

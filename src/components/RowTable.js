@@ -8,7 +8,7 @@ class RowTable extends Component {
     }
     return(
       <tr>
-        <td>{this.props.item.country_name.place}</td>
+        <td>{this.props.item.country_name}</td>
         <td>{this.props.item.breezometer_aqi}</td>
         <td style={style}></td>
         <td>{this.props.item.breezometer_description}</td>

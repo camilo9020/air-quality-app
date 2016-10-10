@@ -1,24 +1,22 @@
 /* global google */
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Geosuggest from 'react-geosuggest';
-// import './App.css'
-// import './geosuggest.css'
-import { getAirQuality } from './Client'
+import '../css/App.css'
+import '../css/geosuggest.css'
+import { search } from '../actions/searchActions'
+// import { getAirQuality } from './Client.js'
 import DataTable from './DataTable'
 import Errors from 'react-errors'
-
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       place: '',
-      google: google,
-      items: JSON.parse(localStorage.getItem('items')) || [],
+      items: [],
       errors: [],
     };
-    this.handleErrorClose = this.handleErrorClose.bind(this);
-    this.handleError = this.handleError.bind(this);
   }
 
   onSuggestSelect(suggest) {
@@ -31,46 +29,17 @@ class App extends Component {
   searchAirQuality(e) {
     e.preventDefault();
     let place = this.state.place;
-    getAirQuality(place).then((response) => this.handleResponse(response, place))
-    .catch((err) => {
-      console.log(err)
-    })
-  }
-
-  handleResponse(response, place) {
-    let items = this.state.items;
-    let data = response.data;
-    data["country_name"] = {place:place}
-    if ("error" in data ) {
-      this.handleError(data)
-    } else {
-      this.handleSuccess(items, data)
-    }
-  }
-
-  handleError(data) {
-    const newError = new Error('Api error: ' + data.error.message );
-    const newErrors = this.state.errors.slice();
-    newErrors.push(newError);
+    this.props.dispatch(search(place))
     this.setState({
-      errors: newErrors,
       place: '',
-      });
-  }
-
-  handleSuccess(items, data) {
-    items.unshift(data)
-    localStorage.setItem("items", JSON.stringify(items.slice(0,5)));
-    this.setState({
-      items: items,
-      place: '',
+      errors: this.props.errors
     })
   }
 
   handleErrorClose(index) {
-    const newErrors = this.state.errors.slice();
+    const newErrors = this.props.errors.slice();
     newErrors.splice(index, 1);
-    this.setState({ errors: newErrors });
+    this.state({ errors: newErrors });
   }
 
   render() {
@@ -85,14 +54,23 @@ class App extends Component {
             radius="20"/>
           <button className="disabled" type="submit" disabled={!this.state.place}>Button</button>
         </form>
-        <DataTable items={this.state.items} />
+        <DataTable items={this.props.items} />
         <Errors
-          errors={this.state.errors}
-          onErrorClose={this.handleErrorClose}
+          errors={this.props.errors}
+          onErrorClose={this.handleErrorClose.bind(this)}
         />
       </div>
+
     )
   }
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  return {
+    items: store.search.items,
+    errors: store.search.errors
+  }
+}
+
+
+export default connect(mapStateToProps)(App);

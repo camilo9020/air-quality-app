@@ -4,14 +4,12 @@ import { connect } from 'react-redux'
 import Geosuggest from 'react-geosuggest';
 import './App.css'
 import './geosuggest.css'
-import { search } from '../actions/searchActions'
-// import { getAirQuality } from './Client.js'
+import { getAirQuality } from './Client.js'
 import DataTable from './DataTable'
 import Errors from 'react-errors'
 
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -20,8 +18,8 @@ class App extends Component {
       items: JSON.parse(localStorage.getItem('items')) || [],
       errors: [],
     };
-    // this.handleErrorClose = this.handleErrorClose.bind(this);
-    // this.handleError = this.handleError.bind(this);
+    this.handleErrorClose = this.handleErrorClose.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
   onSuggestSelect(suggest) {
@@ -34,43 +32,42 @@ class App extends Component {
   searchAirQuality(e) {
     e.preventDefault();
     let place = this.state.place;
-    this.props.dispatch(search(place))
-    // getAirQuality(place).then((response) => this.handleResponse(response, place))
-    // .catch((err) => {
-    //   console.log(err)
-    // })
+    getAirQuality(place).then((response) => this.handleResponse(response, place))
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
 
-  // handleResponse(response, place) {
-  //   let items = this.state.items;
-  //   let data = response.data;
-  //   data["country_name"] = {place:place}
-  //   if ("error" in data ) {
-  //     this.handleError(data)
-  //   } else {
-  //     this.handleSuccess(items, data)
-  //   }
-  // }
+  handleResponse(response, place) {
+    let items = this.state.items;
+    let data = response.data;
+    data["country_name"] = {place:place}
+    if ("error" in data ) {
+      this.handleError(data)
+    } else {
+      this.handleSuccess(items, data)
+    }
+  }
 
-  // handleError(data) {
-  //   const newError = new Error('Api error: ' + data.error.message );
-  //   const newErrors = this.state.errors.slice();
-  //   newErrors.push(newError);
-  //   this.setState({
-  //     errors: newErrors,
-  //     place: '',
-  //     });
-  // }
+  handleError(data) {
+    const newError = new Error('Api error: ' + data.error.message );
+    const newErrors = this.state.errors.slice();
+    newErrors.push(newError);
+    this.setState({
+      errors: newErrors,
+      place: '',
+      });
+  }
 
-  // handleSuccess(items, data) {
-  //   items.unshift(data)
-  //   localStorage.setItem("items", JSON.stringify(items.slice(0,5)));
-  //   this.setState({
-  //     items: items,
-  //     place: '',
-  //   })
-  // }
+  handleSuccess(items, data) {
+    items.unshift(data)
+    localStorage.setItem("items", JSON.stringify(items.slice(0,5)));
+    this.setState({
+      items: items,
+      place: '',
+    })
+  }
 
   handleErrorClose(index) {
     const newErrors = this.state.errors.slice();

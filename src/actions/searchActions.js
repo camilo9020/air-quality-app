@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export function search(place) {
+export const search = (place) => {
 
   return function(dispatch) {
     axios.get("https://api.breezometer.com/baqi/?location=" + place.replace(/ /g,"+") + "&key=075ad8e8766a4096a8e8029b4b142108")
@@ -12,7 +12,6 @@ export function search(place) {
          response.data['country_name'] = place
          dispatch({type: "FETCH_SEARCH_FULFILLED", payload: response.data})
         }
-
       })
       .catch((err) => {
         dispatch({type: "FETCH_SEARCH_REJECTED", payload: err})
@@ -20,7 +19,6 @@ export function search(place) {
   }
 }
 
-export function close() {
-
+export const closeError = () => (dispatch) => {
+  dispatch({type: "CLOSE_ERROR"})
 }
-

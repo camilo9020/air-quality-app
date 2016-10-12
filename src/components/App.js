@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Geosuggest from 'react-geosuggest';
 import '../css/App.css'
 import '../css/geosuggest.css'
-import { search } from '../actions/searchActions'
+import { search, closeError } from '../actions/searchActions'
 // import { getAirQuality } from './Client.js'
 import DataTable from './DataTable'
 import Errors from 'react-errors'
@@ -32,14 +32,11 @@ class App extends Component {
     this.props.dispatch(search(place))
     this.setState({
       place: '',
-      errors: this.props.errors
     })
   }
 
   handleErrorClose(index) {
-    const newErrors = this.props.errors.slice();
-    newErrors.splice(index, 1);
-    this.state({ errors: newErrors });
+   this.props.dispatch(closeError())
   }
 
   render() {
@@ -68,7 +65,7 @@ class App extends Component {
 const mapStateToProps = (store) => {
   return {
     items: store.search.items,
-    errors: store.search.errors
+    errors: store.handleError.errors
   }
 }
 

@@ -1,24 +1,30 @@
 import React from 'react'
 import { shallow } from  'enzyme'
-import App from '../components/App.js'
+import ConnectedApp, { App }  from '../components/App.js'
+import { Provider } from 'react-redux'
+import store from '../store.js'
 
-// jest.mock('localStorage', () => {
-//   const localStorage = localStorage ||
-//   {
-//     getItem() {
-//       return "{}";
-//     }
-//   };
-//   return localStorage
-// })
 
 describe( '<App />', () => {
   it('Button disable when input is empty and available when is filled', () => {
-    const app = shallow(
-      <App />
-    );
+    const  app  = shallow(<App />);
+    // const app = shallow(<Provider store={store}>
+    //     <App />
+    //   </Provider>
+    // )
+
     expect(app.find('button').props().disabled).toEqual(true);
     app.setState({place: 'Nueva York, Estados Unidos'})
     expect(app.find('button').props().disabled).toEqual(false);
   });
 });
+
+// describe('Searchs', () => {
+//     it('each search should fetch the correct result', () => {
+
+//     })
+// })
+
+// describe('search errors', () => {
+
+// })

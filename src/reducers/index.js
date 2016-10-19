@@ -1,20 +1,19 @@
 import { combineReducers } from "redux"
 
-const search = (state={
+export function search(state={
     items:  [],
     fetching: false,
     fetched: false,
-  }, action) => {
+  }, action) {
 
   switch (action.type) {
     case "FETCH_SEARCH": {
-      return {...state, fetching:true, place: action.payload}
+      return {...state, fetching:true}
     }
     case "FETCH_SEARCH_REJECTED": {
       return {...state, fetched: false, error: action.payload}
     }
     case "FETCH_SEARCH_FULFILLED": {
-      console.log("Success response")
       return {
       ...state,
       fetching: true,
@@ -27,15 +26,14 @@ const search = (state={
   }
 }
 
-const handleError = (state = {
+function handleError(state = {
     errors: [],
     fetching: false,
     fetched: true,
-  }, action) => {
+  }, action) {
 
   switch (action.type) {
     case "FETCH_SEARCH_ERROR": {
-      console.log(action.payload.error.message)
       return {
         ...state,
         fetching: true,

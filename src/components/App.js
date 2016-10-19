@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Geosuggest from 'react-geosuggest';
-import '../css/App.css'
-import '../css/geosuggest.css'
+// import '../css/App.css'
+// import '../css/geosuggest.css'
 import { search, closeError } from '../actions/searchActions'
-// import { getAirQuality } from './Client.js'
 import DataTable from './DataTable'
 import Errors from 'react-errors'
-class App extends Component {
+
+export class App extends Component {
 
   constructor(props) {
     super(props);
@@ -29,7 +29,7 @@ class App extends Component {
   searchAirQuality(e) {
     e.preventDefault();
     let place = this.state.place;
-    this.props.dispatch(search(place))
+    this.props.search(place);
     this.setState({
       place: '',
     })
@@ -69,5 +69,9 @@ const mapStateToProps = (store) => {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+    search: (place) => dispatch(search(place))
+})
 
-export default connect(mapStateToProps)(App);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

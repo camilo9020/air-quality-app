@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as types from '../constants/ActionTypes.js'
 
 export const search = (place) => {
 
@@ -6,19 +7,19 @@ export const search = (place) => {
 
   return (dispatch) => {
     dispatch({
-      type: "FETCH_SEARCH"
+      type: types.FETCH_SEARCH
     })
     return axios.get(AIR_API).then((response) => {
       if ( "error" in response.data ) {
-       dispatch({type: "FETCH_SEARCH_ERROR", payload: response.data})
+       dispatch({type: types.FETCH_SEARCH_ERROR, payload: response.data})
       }
       else {
        response.data['country_name'] = place
-       dispatch({type: "FETCH_SEARCH_FULFILLED", payload: response.data})
+       dispatch({type: types.FETCH_SEARCH_FULFILLED, payload: response.data})
       }
     })
     .catch((err) => {
-      dispatch({type: "FETCH_SEARCH_REJECTED", payload: err})
+      dispatch({type: types.FETCH_SEARCH_REJECTED, payload: err})
         })
   }
 }

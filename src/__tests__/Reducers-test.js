@@ -18,7 +18,7 @@ describe('Search', () => {
     expect(
       search([], {
         type: search.FETCH_SEARCH_FULLFILLED,
-        items: "item QA"
+        payload: "item QA"
       })
     ).toEqual(
       [

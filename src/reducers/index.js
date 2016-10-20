@@ -1,4 +1,5 @@
 import { combineReducers } from "redux"
+import * as types from '../constants/ActionTypes.js'
 
 export function search(state={
     items:  [],
@@ -7,18 +8,18 @@ export function search(state={
   }, action) {
 
   switch (action.type) {
-    case "FETCH_SEARCH": {
+    case types.FETCH_SEARCH: {
       return {...state, fetching:true}
     }
-    case "FETCH_SEARCH_REJECTED": {
-      return {...state, fetched: false, error: action.payload}
+    case types.FETCH_SEARCH_REJECTED: {
+      return {...state, fetched: false, fetching: false, error: action.payload}
     }
-    case "FETCH_SEARCH_FULFILLED": {
+    case types.FETCH_SEARCH_FULFILLED: {
       return {
-      ...state,
-      fetching: true,
-      fetched: true,
-      items: [...state.items, action.payload]
+        ...state,
+        fetching: false,
+        fetched: true,
+        items: [...state.items, action.payload]
       }
     }
     default:
@@ -26,25 +27,25 @@ export function search(state={
   }
 }
 
-function handleError(state = {
+const initialState = [
+  {
     errors: [],
-    fetching: false,
-    fetched: true,
-  }, action) {
+    fetched: false,
+  }
+]
 
+export function handleError(state = initialState, action) {
   switch (action.type) {
-    case "FETCH_SEARCH_ERROR": {
+    case types.FETCH_SEARCH_ERROR: {
       return {
         ...state,
-        fetching: true,
         fetched: true,
         errors: [...state, { message: action.payload.error.message }]
       }
     }
-    case "CLOSE_ERROR": {
+    case types.CLOSE_ERROR: {
       return {
         ...state,
-        fetching: false,
         fetched: false,
         errors: []
       }

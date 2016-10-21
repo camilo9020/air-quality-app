@@ -11,6 +11,8 @@
     "enzyme": "^2.4.1",
     "jest": "^15.1.1",
     "jest-cli": "^16.0.1",
+    "jest-css-modules": "^1.1.0",
+    "mock-local-storage": "^1.0.2",
     "moxios": "^0.3.0",
     "react-addons-test-utils": "^15.3.2",
     "react-scripts": "0.6.0",
@@ -38,6 +40,7 @@
     "eject": "react-scripts eject"
   },
   "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/jest-css-modules",
     "setupFiles": [
       "src/__mocks__/variablesMock.js"
     ]

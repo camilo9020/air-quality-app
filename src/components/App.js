@@ -36,7 +36,7 @@ export class App extends Component {
   }
 
   handleErrorClose(index) {
-   this.props.dispatch(closeError())
+   this.props.closeError()
   }
 
   render() {
@@ -70,7 +70,8 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    search: (place) => dispatch(search(place))
+    search: (place) => dispatch(search(place)),
+    closeError: () => dispatch(closeError())
 })
 
 

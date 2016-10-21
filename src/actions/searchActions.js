@@ -25,5 +25,5 @@ export const search = (place) => {
 }
 
 export const closeError = () => (dispatch) => {
-  dispatch({type: "CLOSE_ERROR"})
+  dispatch({type: types.CLOSE_ERROR})
 }
